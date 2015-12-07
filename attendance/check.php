@@ -39,14 +39,14 @@
 	{
 		$i = extract($_POST);
 
-		$query = mysql_query("SELECT * FROM class_faculty where classID='$id'");
+		$query = mysql_query("SELECT * FROM class_faculty as c, subject_master as s where c.subject_id=s.subject_id and classID='$id'");
 		$fetch = mysql_fetch_array($query);
 
 		if(mysql_num_rows($query) > 0)
 		{
 			if(isset($_POST['submit']))
 			{
-				$cheking = mysql_query("SELECT * FROM attendance_faculty where userID='".$fetch['userID']."' and subject='".$fetch['Subject']."' and date='".date('Y-m-d')."'");
+				$cheking = mysql_query("SELECT * FROM attendance_faculty where userID='".$fetch['userID']."' and subject='".$fetch['subject_code']."' and date='".date('Y-m-d')."'");
 				if(mysql_num_rows($cheking) > 0)
 				{
 					echo "<script> alert('Checked already.'); window.location.href='../logs/logs.php'; </script>";
@@ -55,7 +55,7 @@
 				{
 					$a = extract($_POST);
 					$absent = "INSERT INTO attendance_faculty(userID,subject,date,timeIn, timeout, Attendance,Cause) 
-		           	VALUES ('".$fetch['userID']."','".$fetch['Subject']."',NOW(), '00:00:00', '00:00:00', 'Excuse','$cause')";
+		           	VALUES ('".$fetch['userID']."','".$fetch['subject_code']."',NOW(), '00:00:00', '00:00:00', 'Excuse','$cause')";
 		           	$result = mysql_query($absent) or die ("Error in query:" .mysql_error());
 		              
 		           	echo "<script> window.location.href='../logs/logs.php'; </script>";

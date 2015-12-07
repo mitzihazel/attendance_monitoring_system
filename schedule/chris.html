@@ -1,0 +1,64 @@
+<?php 
+
+class Student {
+
+  public $id = 0;
+
+  public function getSchedule($semester = '') { 
+    // Database query based on UID
+
+    return array(
+      'mon' => '',
+      'tue' => '',
+      ...
+    );
+  }
+
+  public function getCheckins($start = 'date', $end = 'date') { 
+    // Query checkin table, on UID, 
+
+    return array(
+      array( 
+        'time' => 'checked in time',
+        'uid' => 1,
+        'image' => 'image path'
+      ),
+    );
+  }
+
+  public function generateReport($start = 'date', $end = 'date', $semester ='') { 
+
+    $schedule = $this->getSchedule($semester);
+    $checkins = $this->getCheckins($start, $end);
+
+    // Loop 
+
+    // Absence 
+    $absense = array();
+
+    // Tardiness
+    $tardiness = array();
+    
+    for($x = 0; $x < 7; $x++) {
+        if ( !isset($schedule[$x]) ) {
+          // they should have a check in here.
+
+          if( !isset($checkins[$x]) ) {
+            $absense[] = strtotime($start, "+{$x} days");
+          }
+          else if (isset($checkins[$x]) && ( $checkins[$x]['time'] > strtotime($start, "+{$x} days, +15 minutes"))) {
+            $tardiness[] = strtotime($start, "+{$x} days");
+          }
+          
+        }
+    }
+    return array(
+      'absense' => $absense,
+      'tardiness' => $tardiness
+    )
+  }
+  
+}
+
+
+ ?>

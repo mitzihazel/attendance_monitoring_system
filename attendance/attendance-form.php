@@ -1,3 +1,24 @@
+<style type="text/css">
+body{
+  margin:0;
+padding:0;
+}
+.img
+    { background:#ffffff;
+    padding:12px;
+    border:1px solid #999999; }
+.shiva{
+ -moz-user-select: none;
+    background: #2A49A5;
+    border: 1px solid #082783;
+    box-shadow: 0 1px #4C6BC7 inset;
+    color: white;
+    padding: 3px 5px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 #082783;
+    font: 12px Verdana, sans-serif;}
+</style>
+
 <?php session_start();
   include_once("../configure/config.php");
   
@@ -16,6 +37,7 @@
 
   echo"<br>";
 ?>
+<script type="text/javascript" src="webcam.js"></script>
 <div id="wrapper">
   <?php include('../design/sidebar.php'); ?>
     <br>
@@ -24,7 +46,7 @@
   <div class="row">
     <div class="col-sm-6 col-md-4 col-md-offset-4">
         <div class="account-wall">
-          <form class="form-signin" method="post" action="save-attendance.php">
+          <form enctype="multipart/form-data" class="form-signin" method="post" action="save-attendance.php" onsubmit="take_snapshot()">
            <div class="col-md-20">
             <div class="form-group">
               <h3><b><center><span id="date_time"></span></center></b></h3>
@@ -35,21 +57,45 @@
                 <input type="text" class="form-control" name="rfidNo" autofocus required>
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <input type="hidden" class="form-control" id="time" name="time" value="<?php echo date('h:i:s a'); ?>" readonly="readonly">
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-               <input type="hidden" class="form-control" id="dateFormat" name="date" value="<?php echo date('Y-M-D'); ?>" readonly="readonly">
-              </div>
-            </div>
-            <div class="form-group">
-              <input type="hidden" name="submit" class="btn btn-lg btn-primary btn-block">
-            </div>
-          </form>
-        </div>
+            <script language="JavaScript">
+                document.write( webcam.get_html(393, 230) );
+            </script>
+            <div id="img" style="height:800px; width:393px; float:left; margin-left:0px; margin-top:20px; border:1px">
+            <input type=button value="Configure Camera Settings" onClick="webcam.configure()" class="btn btn-lg btn-primary btn-block">
+          </div>
+        </form>
     </div>
   </div>
 </div>
+
+
+
+<script  type="text/javascript">
+      webcam.set_api_url( 'save-attendance.php' );
+      webcam.set_quality( 90 ); // JPEG quality (1 - 100)
+      webcam.set_shutter_sound( true ); // play shutter click sound
+      webcam.set_hook( 'onComplete', 'my_completion_handler' );
+
+    function take_snapshot(){
+      // take snapshot and upload to server
+      document.getElementById('img').innerHTML = '<h1>Uploading...</h1>';
+      
+      webcam.snap();
+    }
+
+    function my_completion_handler(msg) {
+      // extract URL out of PHP output
+      if (msg.match(/(http\:\/\/\S+)/)) {
+        // show JPEG image in page
+        
+        document.getElementById('img').innerHTML ='<h3>Upload Successfuly done</h3>'+msg;
+           
+        document.getElementById('img').innerHTML ="<img src="+msg+" class=\"img\">";
+        
+      
+        // reset camera for another shot
+        webcam.reset();
+      }
+      else {alert("Error occured we are trying to fix now: " + msg); }
+    }
+  </script>

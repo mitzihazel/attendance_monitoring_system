@@ -1,27 +1,4 @@
-<!-- login form 
-        <div class="jumbotron">
-            <div class="container">
-                <h2>Sign In</h2>
-                <form name="login" method="post" action="login/login-check.php" novalidate>
-                  <div class="form-group">
-                    <label for="inputEmail">Email Address</label>
-                    <input type="text" class="form-control" name="username" placeholder="Email" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputPassword">Password</label>
-                     <input type="password" class="form-control" name="password" placeholder="Password" required>
-                  </div> 
-                  <input type="submit" class="btn btn-default" value="Sign In" />
-                </form>
-                <br>
-            </div>
-        </div>
-  -->
-
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">

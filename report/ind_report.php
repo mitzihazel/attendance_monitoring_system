@@ -11,6 +11,7 @@ echo"<br>";
     $(this).tab('show')
   })
 </script>
+<script type="text/javascript" src="image_view.js"></script>
 
 <div id="non-printable">
 
@@ -45,7 +46,7 @@ echo"<br>";
                                 <ul class="nav nav-tabs" role="tablist">
                                 <?php 
                                   if (isset($_GET['view'])) {
-                                    echo '<li role="presentation" class="active"><a href="#faculty" aria-controls="faculty" role="tab" data-toggle="tab"><img src="../users/'.$info['image'].'" style="height:30px;width:30p"> '.$info['firstName'].' '.$info['lastName'].'</a></li>';
+                                    echo '<li role="presentation" class="active"><a href="#faculty" aria-controls="faculty" role="tab" data-toggle="tab"><img src="../users/'.$info['image'].'" style="height:30px;width:30px"> '.$info['firstName'].' '.$info['lastName'].'</a></li>';
                                   }
                                   else if (isset($_GET['viewer'])) {
                                     echo '<li role="presentation" class="active"><a href="#faculty" aria-controls="faculty" role="tab" data-toggle="tab"><img src="../user-student/'.$info['image'].'" style="height:30px;width:30p"> '.$info['firstName'].' '.$info['lastName'].'</a></li>';
@@ -102,6 +103,8 @@ echo"<br>";
                                                       <th>Total Hours Absent and Late</th>
                                                       <th>Early Time Out</th>
                                                       <th>Excuse Reason</th>
+                                                      <th>Time in Image</th>
+                                                      <th>Time out Image</th>
                                                    </tr>
                                                 </thead>
                                                 <tbody>
@@ -133,12 +136,30 @@ echo"<br>";
                                                       </td>
                                                       <td><?php echo $data['subject']; ?></td>
                                                       <td><?php echo $data['date']." <small>(".$dd.")</small>"; ?></td>
-                                                      <td><?php $boo = strtotime($data['timeIn']); echo date("h:i:s a", $boo) ?></td>
-                                                      <td><?php $boo = strtotime($data['timeOut']); echo date("h:i:s a", $boo) ?></td>
+                                                      <td><?php $boo = strtotime($data['timeIn']); 
+                                                              if ($data['timeIn'] == "00:00:00") {
+                                                                echo $data['timeIn'];
+                                                              }else 
+                                                                echo date("h:i:s a", $boo); ?>
+                                                      </td>
+                                                      <td><?php $boo = strtotime($data['timeOut']); 
+                                                              if ($data['timeOut'] == "00:00:00") {
+                                                                echo $data['timeOut'];
+                                                              }else 
+                                                                echo date("h:i:s a", $boo); ?>
+                                                      </td>
                                                       <td><?php echo $data['Attendance']; ?></td>
                                                       <td><?php echo $data['tardinessCount']; ?></td>
                                                       <td><?php echo $data['earlyOut']; ?></td>
                                                       <td><?php echo $data['Cause']; ?></td>
+                                                      <td>
+                                                        <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="<?php echo date('Y-m-d l', strtotime($data['date'])); ?>" data-caption="Taken at <?php echo $data['timeIn']; ?>" data-image="<?php echo "../attendance/".$data['image_in']; ?>" data-target="#image-gallery">
+                                                        <img class="img-responsive" src="<?php echo "../attendance/".$data['image_in']; ?>" alt="Time In Image Capture" style="height:100px;width:150px">
+            </a>                                      </td>
+                                                      <td>
+                                                        <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title="<?php echo date('Y-m-d l', strtotime($data['date'])); ?>" data-caption="Taken at <?php echo $data['timeIn']; ?>" data-image="<?php echo "../attendance/".$data['image_out']; ?>" data-target="#image-gallery">
+                                                        <img class="img-responsive" src="<?php echo "../attendance/".$data['image_out']; ?>" alt="Time Out Image Capture" style="height:100px;width:150px">
+            </a>                                      </td>
                                                    </tr>
                                                   <?php
                                                       }
@@ -182,6 +203,8 @@ echo"<br>";
                                                       <th>No. Of hours Attended Class</th>
                                                       <th>Total Hours Absent and Late</th>
                                                       <th>Excuse Reason</th>
+                                                      <th>Time in Image</th>
+                                                      <th>Time out Image</th>
                                                    </tr>
                                                 </thead>
                                                 <tbody>
@@ -213,12 +236,24 @@ echo"<br>";
                                                       </td>
                                                       <td><?php echo $data['area']; ?></td>
                                                       <td><?php echo $data['date']." <small>(".$dd.")</small>"; ?></td>
-                                                      <td><?php $boo = strtotime($data['timeIn']); echo date("h:i:s a", $boo) ?></td>
-                                                      <td><?php $boo = strtotime($data['timeOut']); echo date("h:i:s a", $boo) ?></td>
+                                                      <td><?php $boo = strtotime($data['timeIn']); 
+                                                              if ($data['timeIn'] == "00:00:00") {
+                                                                echo $data['timeIn'];
+                                                              }else 
+                                                                echo date("h:i:s a", $boo); ?>
+                                                      </td>
+                                                      <td><?php $boo = strtotime($data['timeOut']); 
+                                                              if ($data['timeOut'] == "00:00:00") {
+                                                                echo $data['timeOut'];
+                                                              }else 
+                                                                echo date("h:i:s a", $boo); ?>
+                                                      </td>
                                                       <td><?php echo $data['Attendance']; ?></td>
                                                       <td><?php echo $data['totalHour']; ?></td>
                                                       <td><?php echo $data['tardinessCount']; ?></td>
                                                       <td><?php echo $data['Cause']; ?></td>
+                                                      <td><img src="<?php echo "../attendance/".$data['image_in']; ?>" style="height:100px;width:100px"></td>
+                                                      <td><img src="<?php echo "../attendance/".$data['image_out']; ?>" style="height:100px;width:100px"></td>
                                                    </tr>
                                                   <?php } ?>
                                                 </tbody>
@@ -400,4 +435,34 @@ echo"<br>";
           }
         ?>
   </div>
+</div>
+
+
+<!-- Modal for viewing images of attendance -->
+<div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+            </div>
+            <div class="modal-body">
+                <img id="image-gallery-image" class="img-responsive" src="">
+            </div>
+            <div class="modal-footer">
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" id="show-previous-image">Previous</button>
+                </div>
+
+                <div class="col-md-8 text-justify" id="image-gallery-caption">
+                    This text will be overwritten by jQuery
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" id="show-next-image" class="btn btn-default">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

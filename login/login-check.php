@@ -4,8 +4,8 @@
 	if (mysqli_connect_errno()) { 
 	echo "Failed to connect to MySQL: " . mysqli_connect_error(); 
 	} 
-$name = $_POST['username'];
-$pass = $_POST['password'];
+$name = mysql_real_escape_string($_POST['username']);
+$pass = mysql_real_escape_string($_POST['password']);
 
 $result = mysqli_query($con, "SELECT * FROM login WHERE username = '".$name."' AND password= '".$pass."' "); 
 	$data=mysqli_fetch_assoc($result);  	

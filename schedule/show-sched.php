@@ -1,4 +1,4 @@
-<?php session_start();
+  <?php session_start();
 date_default_timezone_set("Asia/Hong_Kong");
   include_once("../configure/config.php");
   
@@ -107,13 +107,13 @@ echo"<br>";
                                                                                 <td>'
                                                                                   .$collect['subject_Desc'].
                                                                                 '</td>';
-                                                                                    $getName = mysql_query("Select * from class_faculty, user_faculty where user_faculty.userID=class_faculty.userID and class_faculty.subject_id ='".$row['subject_id']."'");
+                                                                                    $getName = mysql_query("Select * from class_faculty, user_faculty where user_faculty.userID=class_faculty.userID and class_faculty.subject_id ='".$row['subject_id']."' AND startClass='".$row['startClass']."'");
                                                                                     $ro = mysql_fetch_array($getName);
                                                                         echo    '<td>'
                                                                                   .$ro['lastName'] . "," .$ro['firstName']. " " .$ro['mi']. 
                                                                                 '</td>
                                                                                 <td>'
-                                                                                  .date("h:i:s a", strtotime($roll['startClass'])).' - '.date("h:i:s a", strtotime($roll['endClass'])).
+                                                                                  .date("h:i A", strtotime($roll['startClass'])).' - '.date("h:i A", strtotime($roll['endClass'])).
                                                                                 '</td>
                                                                                 <td>'
                                                                                   .$roll['locationDescr'].
@@ -149,8 +149,8 @@ echo"<br>";
                                                                                       }
                                                                         echo    '</td>
                                                                                 <td>
-                                                                                  <a href="create-schedule.php?sched=Faculty&&edit='.$roll['subject_id'].'"><img src="../glyphicons/glyphicons/png/glyphicons-151-edit.png" height="15" width="15"> </a>
-                                                                                  <a href="show-sched.php?sched=Faculty&&delete='.$row['subject_id'].'"><img src="../glyphicons/glyphicons/png/glyphicons-208-remove-2.png" height="15" width="15"> </a>
+                                                                                  <a href="create-schedule.php?sched=Faculty&&edit='.$roll['subject_id'].'&t='.$row['startClass'].'"><img src="../glyphicons/glyphicons/png/glyphicons-151-edit.png" height="15" width="15"> </a>
+                                                                                  <a href="show-sched.php?sched=Faculty&&delete='.$row['subject_id'].'&t='.$row['startClass'].'"><img src="../glyphicons/glyphicons/png/glyphicons-208-remove-2.png" height="15" width="15"> </a>
                                                                                 </td>
                                                                               </tr>
                                                                         ';
@@ -330,7 +330,7 @@ echo"<br>";
                                                                             .$ro['lastName'] . ", " .$ro['firstName']. " " .$ro['mi']. 
                                                                           '</td>
                                                                           <td>'
-                                                                            .date("h:i:s a", strtotime($row['time_start'])).' - '.date("h:i:s a", strtotime($row['time_end'])).
+                                                                            .date("h:i A", strtotime($row['time_start'])).' - '.date("h:i A", strtotime($row['time_end'])).
                                                                           '</td>
                                                                           <td>'
                                                                               .$row['Day'].
@@ -385,7 +385,7 @@ if(isset($_GET['delete']))
         var result = confirm("Want to delete?");
         if (result) {
             '.
-              $que=mysql_query("DELETE FROM class_faculty where Subject='".$_GET['delete']."'")
+              $que=mysql_query("DELETE FROM class_faculty where subject_id='".$_GET['delete']."' and startClass='".$_GET['t']."'")
             .'
         }
         window.location.href="show-sched.php";

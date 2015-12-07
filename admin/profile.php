@@ -117,19 +117,19 @@ $now = date("Y");
                                                   //SAVING DETAILS TO DBASE//
                                                   if(isset($_POST['add']))
                                                   {
-                                                    $a = extract($_POST);
+                                                    $a = extract(mysql_real_escape_string($_POST));
                                                     mysql_query("INSERT INTO setting_room(roomName,capacity,ip_add) VALUES ('$name','$capacity','$ip')");
                                                     echo "<script> alert('Added Successfully'); window.location.href='profile.php'; </script>";
                                                   }
                                                   else if(isset($_POST['update']))
                                                   {
-                                                    $a = extract($_POST);
+                                                    $a = extract(mysql_real_escape_string($_POST));
                                                     mysql_query("UPDATE setting_room set roomName='$name', capacity='$capacity', ip_add='$ip' where roomNo='".$_GET['edit']."'");
                                                     echo "<script> alert('Updated Successfully'); window.location.href='profile.php'; </script>";
                                                   }
                                                   else if(isset($_GET['delete']))
                                                   {
-                                                    $a = extract($_POST);
+                                                    $a = extract(mysql_real_escape_string($_POST));
                                                     mysql_query("DELETE FROM setting_room where roomNo='".$_GET['delete']."'");
                                                     echo "<script> alert('Deleted Successfully'); window.location.href='profile.php'; </script>";
                                                   }

@@ -61,7 +61,7 @@
                         </div>
                       </div>
 
-                      <script>
+                     <!-- <script>
                       function viewDescr() {
                           var x = document.getElementById("code").value;
                           //document.getElementById("description").value = x;
@@ -70,24 +70,24 @@
                       </script>
 
                       <?php
-                        if(isset($_GET['desc']))
+                      //  if(isset($_GET['desc']))
                         {
-                          $subj_det = mysql_query("SELECT * FROM subject_master where subject_id = '".$_GET['desc']."'");
-                          $details = mysql_fetch_assoc($subj_det);
+                      //    $subj_det = mysql_query("SELECT * FROM subject_master where subject_id = '".$_GET['desc']."'");
+                      //    $details = mysql_fetch_assoc($subj_det);
                       ?>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Description</label>
-                          <input type="text" class="form-control" name="description" id="description" placeholder="<?php echo $details['subject_Desc']; ?>">
+                          <input type="text" class="form-control" name="description" id="description" placeholder="<?php// echo $details['subject_Desc']; ?>">
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Unit/s</label>
-                          <input type="text" class="form-control" name="units" id="units" placeholder="<?php echo $details['units']; ?>">
+                          <input type="text" class="form-control" name="units" id="units" placeholder="<?php// echo $details['units']; ?>">
                         </div>
                       </div>
-                      <?php } ?>
+                      <?php } ?> -->
                       <div class="col-md-5">
                         <div class="form-group">
                           <label>Name</label>
@@ -188,6 +188,7 @@
                       <?php
                         if(isset($_GET['edit']))
                         {
+                          $_SESSION['t'] = $_GET['t'];
                       ?>
                          <input type="submit" class="btn btn-success btn-green" name="update" value="Save Schedule">
                       <?php
@@ -212,12 +213,11 @@
 
   if(isset($_GET['edit'])) 
   {
-
     /*
         var code = document.getElementById("teacher").value = "'.$fetch['teacher'].'";
         var code = document.getElementById("course").value = "'.$fetch['course'].'";
     */
-    $que = mysql_query("SELECT * FROM class_faculty as i, user_faculty as a WHERE i.userID=a.userID and subject_id='".$_GET['edit']."'");
+    $que = mysql_query("SELECT * FROM class_faculty as i, user_faculty as a WHERE i.userID=a.userID and subject_id='".$_GET['edit']."' and startClass='".$_GET['t']."'");
     $fetch = mysql_fetch_assoc($que);
 
     echo'
@@ -229,7 +229,7 @@
         var code = document.getElementById("faculty").value = "'.$fetch['userID'].'";
       </script>';
 
-      $quer = mysql_query("SELECT * FROM class_faculty where subject_id='".$_GET['edit']."'");
+      $quer = mysql_query("SELECT * FROM class_faculty where subject_id='".$_GET['edit']."' and startClass='".$_GET['t']."'");
       $day = array();
       while($row = mysql_fetch_assoc($quer))
       {
