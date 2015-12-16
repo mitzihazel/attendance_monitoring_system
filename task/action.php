@@ -42,14 +42,22 @@ echo"<br>";
                     <div class="col-md-12">
                       <div class="form-group" >
                         <label>Student Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="<?php echo $get['lastName']; ?>" value="<?php echo $get['userID'];?>">
+                        <input type="hidden" class="form-control" name="name" placeholder="<?php echo $get['lastName']; ?>" value="<?php echo $get['userID'];?>">
+                        <input type="text" class="form-control" placeholder="<?php echo $get['lastName']; ?>" value="<?php echo $get['lastName'].', '.$get['firstName']; ?>">
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Area / Location</label>
-                        <input type="text" class="form-control" name="area" placeholder="<?php echo $get['area'];?>" value="<?php echo $get['area'];?>">
-                      </div>
+                        <select name='area' class="form-control">
+                            <?php
+                              $are = mysql_query("SELECT * FROM working_area");
+                              while($row = mysql_fetch_array($are))
+                              {
+                                print '<option value='.$row['area_ID'].'>'.$row['area'];
+                              }
+                            ?>
+                          </select></div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">

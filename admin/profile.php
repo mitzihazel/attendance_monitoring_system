@@ -27,11 +27,14 @@ $now = date("Y");
                               <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"> Admin</a></li>
                               <li role="presentation"><a href="#room" aria-controls="room" role="tab" data-toggle="tab"> Room Master </a></li>
                               <li role="presentation"><a href="#subject" aria-controls="room" role="tab" data-toggle="tab"> Subject Master </a></li>
+                              <li role="presentation"><a href="#areas" aria-controls="areas" role="tab" data-toggle="tab"> Working Student Areas </a></li>
                               <li role="presentation"><a href="#schoolyr" aria-controls="schoolyr" role="tab" data-toggle="tab"> School Year </a></li>
                             </ul>
                             <div id="my-tab-content" class="tab-content">
                               <div class="col-sm-100 col-md-50 clearfix">
                               </div>
+
+                              <!-- Tab for PRofile Master -->
                                 <div role="tabpanel" class="tab-pane active" id="profile">
                                     <!-- Page Heading -->
                                       <div class="col-lg-12">
@@ -86,6 +89,8 @@ $now = date("Y");
                                         </form>
                                     </div>
                                 </div>
+
+                              <!-- Tab for Room Master -->
                                 <div role="tabpanel" class="tab-pane fade" id="room">
                                 <br>
                                 <a href="profile.php?a=room"><button type="button"><span class="glyphicon glyphicon-plus"></span> Add Room</button></a>
@@ -227,6 +232,8 @@ $now = date("Y");
                                     </div>
                                   </div>
                                 </div>
+
+                              <!-- Tab for Subject Master -->
                                 <div role="tabpanel" class="tab-pane fade" id="subject">
                                 <br>
                                 <a href="profile.php?set=subject"><button type="button"><span class="glyphicon glyphicon-plus"></span> Add Subject</button></a>
@@ -384,6 +391,51 @@ $now = date("Y");
                                     </div>
                                   </div>
                                 </div>
+
+                              <!-- Tab for Working Student Areas Master -->
+                                <div role="tabpanel" class="tab-pane fade" id="areas">
+                                <br>
+                                <a href="profile.php?set=subject"><button type="button"><span class="glyphicon glyphicon-plus"></span> Add Area</button></a>
+                                <br><br>
+                                  <div class="col-lg-5">
+                                    <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                          <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> List of Working Areas </h3>
+                                      </div>
+                                      <div class="panel-body">
+                                          <div class="table-responsive">
+                                              <table class="table table-bordered table-hover table-striped">
+                                                  <thead>
+                                                    <tr colspan="3">
+                                                        <th>
+                                                          Area Name
+                                                        </th>
+                                                        <th>
+                                                          Description
+                                                        </th>
+                                                        <th>
+                                                          Building
+                                                        </th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <?php
+                                                      $area = mysql_query("SELECT * FROM working_area");
+                                                      while ($row = mysql_fetch_array($area)) {
+                                                        print '<tr><td>'.$row['area'].'</td>';
+                                                        print '<td>'.$row['description'].'</td>';
+                                                        print '<td>'.$row['building'].'</td></tr>';
+                                                      }
+                                                    ?>
+                                                  </tbody>
+                                              </table>
+                                          </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              <!-- Tab for School YEAR Master -->
                                 <div role="tabpanel" class="tab-pane fade" id="schoolyr">
                                 <br>
                                   <form name="form" method="post" action="">

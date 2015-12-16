@@ -85,42 +85,46 @@ $id = $_GET['id'];
 		//print $day;
 		//QUERY HERE
 		$starting = array();
-		$times = array();
-		$count = 0;
+		$ends = array();
+		
 
 		$que = mysql_query("SELECT * FROM `class_student` where `Days` = '".$value."'");
 		while($row = mysql_fetch_array($que))
 		{
 			//print '['.$row['startClass'].']';
 			$starting[] = $row['startClass'];
+			$ends[] = $row['endClass'];
 		}
 
 		///TIME LOOP HERE
 		$t = strtotime("7:00:00");
-		for ($i=0; $i < 20;$i++) {
+		for ($i=0; $i < 20;$i++) 
+		{
 			$t = strtotime("+30 minutes",$t);
 			$track_time[$i] = $t;
 			$time = date("H:i:s", $t);
 
-			print date("H:i", $t)."<br>";
 
-			foreach ($starting as $s) {
-				if($s == $time)
-				{
-					$count++;
-					print '['.$count.']';
-				}
-				else
-				{
-					//print date("H:i", $t)."<br>";
-					//print $time."<br>";
-				}
 
+			if($starting == null)
+			{
+				print $time."<br>";
 			}
-	 	}
+			else
+			{
+				print $time."<br>";
 
-		$res = ($count != 0) ? $a : $b ;
-		print $res;
+				foreach ($starting as $key) {
+					if($time == $key)
+					{
+						print "<p style='color:red'>".$time."</p>";
+					}
+				}
+				
+			}
+			
+	 	}
+	 	
 	 	echo "--------------- ".$value."<br>";
 	}
 

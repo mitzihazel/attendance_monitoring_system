@@ -36,6 +36,8 @@ echo"<br>";
                             <div id="my-tab-content" class="tab-content">
                               <div class="col-sm-100 col-md-50 clearfix">
                               </div>
+
+                              <!-- TAB FOR FACULTY  -->
                                 <div role="tabpanel" class="tab-pane active" id="faculty">
                                   <br>
                                   <div class="col-sm-20 col-md-15">
@@ -122,11 +124,11 @@ echo"<br>";
                                                                           {
                                                                             echo "<p id='not'><b>".$get['lastName'].", ".$get['firstName']."</b><br>".$get['subject_code']."</p>";
 
-                                                                            echo '<button type="button" data-toggle="modal" data-target="#myModal" data-id="'.$get['classID'].'" class="open-AddBookDialog">Excuse</button>';
+                                                                            echo '<button type="button" data-toggle="modal" data-target="#myModal" data-id="'.$get['classID'].'" class="open-Modal">Excuse</button>';
 
                                                                             if($now > $end)
                                                                             {
-                                                                              echo "<a href='../attendance/check.php?AbsentF=".$get['userID']."&&subject=".$get['subject_code']."&&start=".$get['startClass']."'><button>Absent</button></a>";
+                                                                              echo "<a href='../attendance/check.php?AbsentF=".$get['userID']."&subject=".$get['subject_code']."&start=".$get['startClass']."'><button>Absent</button></a>";
                                                                             }
                                                                           }
                                                                           else
@@ -153,6 +155,8 @@ echo"<br>";
                                   </div>
                                 </div>
                                 </div>
+
+                              <!-- TAB FOR Working STUDENTS -->
                                 <div role="tabpanel" class="tab-pane fade" id="working">
                                   <br>
                                   <div class="col-sm-20 col-md-11">
@@ -174,8 +178,10 @@ echo"<br>";
                                                                     $que = mysql_query("SELECT * FROM area_assign");
                                                                       while ($row = mysql_fetch_assoc($que)) 
                                                                       {
+                                                                        //$assigned_to = mysql_query("SELECT * FROM user_student where userID='".$row['studentID']."'");
+                                                                        //$roll = mysql_fetch_assoc($assigned_to);
                                                                   ?>
-                                                                    <th><?php echo $row['area'] ?></th>
+                                                                    <th><?php echo $row['area'] ?> <a data-toggle="modal" data-target="#reassign" data-id="<?php echo $row['area'] ?>" name="<?php echo $row['area'] ?>" class="open-Modal">[ Re-assign ]</a></th>
                                                                   <?php
                                                                       }
                                                                   ?>
@@ -241,8 +247,9 @@ echo"<br>";
 
                                                                                   if($en == $te || $en == "07:45")
                                                                                   {
-                                                                                      echo "<a href='../attendance/check.php?AbsentS=".$dis['studID']."&&time=".$take['time_start']."'><button>Absent</button></a>";
-                                                                                      echo '<button type="button" data-toggle="modal" data-target="#myModal" data-id="'.$gets['classID'].'" class="open-AddBookDialog">Excuse</button>';                                                                                 
+
+                                                                                      echo '<button type="button" data-toggle="modal" data-target="#myModal" data-id="'.$dis['studID'].'" name="'.$rows['area'].'" class="open-Modal">Excuse</button>';                                                                                 
+                                                                                      echo "<a href='../attendance/check.php?AbsentS=".$dis['studID']."&time=".$dis['time_start']."&day=".$dis['Day']."'><button>Absent</button></a>";
                                                                                   }
                                                                               }
                                                                           }
@@ -280,9 +287,11 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 
-$(document).on("click", ".open-AddBookDialog", function () {
-     var myBookId = $(this).data('id');
-     $(".modal-body #bookId").val( myBookId );
+$(document).on("click", ".open-Modal", function () {
+     var excuseID = $(this).data('id');
+     var area = $(this).attr('name');
+     $(".modal-body #exID").val( excuseID );
+     $(".modal-body #area").val( area );
 });
 </script>
 
@@ -299,8 +308,41 @@ $(document).on("click", ".open-AddBookDialog", function () {
       <div class="modal-body">
       
         <form name="excuse" method="post" action='../attendance/check.php?ExcuseF'>
-          <input type="hidden" name="id" id="bookId" name="bookId">
+          <input type="hidden" id="exID" name="exID">
+          <input type="hidden" id="area" name="area">
           <textarea name="cause" class="form-control"></textarea>
+          <input type="submit" name="submit" value="Submit">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Re-assign -->
+<div id="reassign" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Re-Assigning Task</h4>
+      </div>
+
+      <div class="modal-body">
+        <form name="reassign" method="post" action='../task/re-assign.php'>
+          <input type="text" name="id" id="area" class="form-control" readonly><br>
+          <label>Re-assign Task to :</label>
+            <select name="stud_name" class="form-control">
+              <?php
+                $studs = mysql_query("SELECT * FROM user_student");
+                while($rows = mysql_fetch_array($studs)){
+                  print '<option value="'.$rows['userID'].'">'.$rows['lastName'].', '.$rows['firstName'].'</option>';
+                }
+              ?>
+            </select>
           <input type="submit" name="submit" value="Submit">
         </form>
       </div>
@@ -311,3 +353,16 @@ $(document).on("click", ".open-AddBookDialog", function () {
 
   </div>
 </div>
+
+<?php
+  if(isset($_GET['load']))
+  {
+    echo '
+        <script>
+            $("#reassign").modal("show");
+            var ex = "'.$_GET['load'].'";
+            $(".modal-body #area").val( ex );
+        </script>';
+
+  }
+?>

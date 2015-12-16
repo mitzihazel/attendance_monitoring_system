@@ -8,6 +8,8 @@
    	<link rel="stylesheet" href="../css/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/printable.css">
    	<script type="text/javascript" src="../css/jquery.js"></script>
+    <script type="text/javascript" src="../css/jquery-1.11.3.min"></script>
+    
    	<script type="text/javascript" src="css/bootstrap.min.js"></script>
    	<script type="text/javascript" src="../css/bootstrap-tab.js"></script>
 

@@ -47,7 +47,15 @@ echo"<br>";
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Area / Location</label>
-                        <input type="text" class="form-control" name="area" placeholder="Location">
+                          <select name='area' class="form-control">
+                            <?php
+                              $are = mysql_query("SELECT * FROM working_area");
+                              while($row = mysql_fetch_array($are))
+                              {
+                                print '<option value='.$row['area_ID'].'>'.$row['area'];
+                              }
+                            ?>
+                          </select>
                       </div>
                     </div>
                     <div class="col-md-6">
